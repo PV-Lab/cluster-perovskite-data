@@ -19,10 +19,13 @@ Running the code represented in this repository as it is with the data provided 
 
 ## Installation
 
+Install Python programming platform Anaconda.
+
 $ git clone https://github.com/PV-Lab/cluster-perovskite-data.git
 $ cd cluster-perovskite-data
+$ conda env create -f environment.yml
 
-TO DO add env file
+Install Jupyter Notebook, activate environment clustering-perovskite, and run notebooks "Clustering_of_Camera_Image_Data.ipynb" and "Plotting_of_XRD_Patterns.ipynb".
 
 ## Description of the Code
 
