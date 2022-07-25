@@ -1,0 +1,14 @@
+name: clustering-perovskite
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - jupyter
+  - pandas
+  - scipy
+  - matplotlib
+  - scikit-learn
+  - spyder==5.1.5
+  - seaborn
+prefix: /home/armi/anaconda3/envs/clustering-perovskite
