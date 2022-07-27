@@ -21,7 +21,7 @@ Running the code represented in this repository as it is with the data provided 
 
 Install Python programming platform Anaconda.
 
-$ git clone https://github.com/PV-Lab/cluster-perovskite-data.git
+$ git clone https://github.com/PV-Lab/cluster-perovskite-data.git 
 $ cd cluster-perovskite-data
 $ conda env create -f environment.yml
 
