@@ -27,7 +27,7 @@ Install Python programming platform Anaconda.
 
 `$ conda env create -f environment.yml`
 
-Install Jupyter Notebook, activate environment clustering-perovskite, and run notebooks "Clustering_of_Camera_Image_Data.ipynb" and "Plotting_of_XRD_Patterns.ipynb".
+Install Jupyter Notebook, activate environment clustering-perovskite, and run notebooks "_Clustering_of_Camera_Image_Data.ipynb_" and "_Plotting_of_XRD_Patterns.ipynb_".
 
 ## Description of the Code
 
