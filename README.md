@@ -3,7 +3,7 @@ cluster-perovskite-data
 
 ## Description
 
-Clustering of perovskite degradation data (sample colors vs. time), identification of the cluster centroids, and plotting the XRD graphs for the cluster centroids. This repository is a part of our article:
+Clustering of 1) X-ray diffraction (XRD) data of non-aged perovskite films and 2) degradation data (sample colors in RGB vs. time of degradation) from perovskite films. Additionally, the cluster centroids are identified and the RGB curves and XRD spectra for the cluster centroids plotted. This repository is a part of our article:
 
 [1] [article details come here]
 
@@ -13,7 +13,7 @@ The data included in this repository is from our previous article:
 
 [2] Shijing Sun, Armi Tiihonen, Felipe Oviedo, Zhe Liu, Janak Thapa, Yicheng Zhao, Noor Titan P. Hartono, Anuj Goyal, Thomas Heumueller, Clio Batali, Alex Encinas, Jason J. Yoo, Ruipeng Li, Zekun Ren, I. Marius Peters, Christoph J. Brabec, Moungi G. Bawendi, Vladan Stevanovic, John Fisher, Tonio Buonassisi, "A data fusion approach to optimize compositional stability of halide perovskites", Matter, 2021, https://doi.org/10.1016/j.matt.2021.01.008.
 
-The data shared inside the "Data" folder is sufficient to reproduce the methods described in article [1]. The data were obtained observing perovskite ([MA-FA-Cs]PbI3) films at MIT in 2019 and presented in article [2]. Film compositions and preparation are described in article [2]. Each film was halved and one half was exposed to X-ray diffraction (XRD) measurement and another half to an aging test. Data shared inside "Data\XRD" are XRD data of the as-grown films, which were also presented in the Matter paper referenced above, and are formatted in 2 columns (.xy files) with theta (degrees) versus intensity (a.u.). Image data ("Data\Images") were collected during an aging test, using an RGB camera within an environmental chamber (Generation 1, as described in the manuscript). Raw film color data were converted into color-calibrated data ("Data\Images\Calibrated") using 3-dimensional thin plate spline method and a reference color chart (also called "color card" or "color calibration tile"), as described in the manuscript.
+The data shared inside the "Data" folder is sufficient to reproduce the methods described in article [1]. The data were obtained observing perovskite ([MA-FA-Cs]PbI3) films at MIT in 2019 and presented in article [2]. Film compositions and preparation are described in article [2]. Each film was halved and one half was exposed to X-ray diffraction (XRD) measurement and another half to an aging test. Some films were prepared and measured by XRD and/or degraded multiple times, thus there are duplicate samples in the data with the same composition. Data shared inside "Data\XRD" are XRD data of the as-grown films, which were also presented in the Matter paper referenced above, and are formatted into columns of theta (degrees) versus intensity (a.u.). The raw XRD data was resampled to constant theta steps and was intensity-normalized before the clustering, and both raw data and scaled data are saved into separate files. Image data ("Data\Images") were collected during an aging test, using an RGB camera within an environmental chamber (Generation 1, as described in the paper). Raw film color data were converted into color-calibrated data ("Data\Images\Calibrated") using 3-dimensional thin plate spline method and a reference color chart (also called "color card" or "color calibration tile"), as described in the paper.
 
 Running the code represented in this repository as it is with the data provided reproduces Figure 3 in article [1].
 
@@ -27,38 +27,45 @@ Install Python programming platform Anaconda.
 
 `$ conda env create -f environment.yml`
 
-Install Jupyter Notebook, activate environment clustering-perovskite, and run notebooks "_Clustering_of_Camera_Image_Data.ipynb_" and "_Plotting_of_XRD_Patterns.ipynb_".
+Install Jupyter Notebook, activate environment clustering-perovskite.
+
+- Run file "clustering_xrd.py" to produce XRD clustering figures.
+- Optional step to produce Supplementary Material figures: run "xrd_spectra_of_rgb_centroids.py".
+- Run file "clustering_rgb.py" to produce clustering figures on the color degradation data.
+- Optional step to produce Supplementary Material figures: run "rgb_curves_of_xrd_centroids.py".
 
 ## Description of the Code
 
-The codes in this repo combine to reproduce Figure 3 of article [1] from data contained within the "Data" folder.
+The codes in this repository reproduce Figure 3 of article [1] from data contained within the "Data" folder.
 
-- "_Clustering_of_Camera_Image_Data.ipynb_": This code applies a hierarchical clustering algorithm to camera image data, and identifies the centroids. In this dataset, three clusters are identified, with six centroids in total (one compositional centroid and one "the most typical degradation curve" centroid for each cluster); the precise number of clusters varies depending on the dataset. For each of the six centroids, the nearest film composition was identified. For each of these compositions, the XRD spectrum of the as-grown film was placed into the "Data\XRD" folder manually. NB: One film that repeatedly clusteered to its own single-film cluster was dropped from the clustering analysis as an outlier. NB: Each "camera image datum" is the entire camera time series for a given composition — capturing the film degradation in the environmental chamber as a function of time. (Films with different decay dynamics, as well as different starting and ending colors, are expected to cluster differently.)
-- "_Plotting_of_XRD_Patterns.ipynb_": This code plots the representative (the film nearest to each cluster centroid) XRD spectra mentioned above, contained in "Data\XRD," and reproduces the plot shown in Figure 3. Note that XRD intensity (y-axis) is in arbitrary units (e.g., depends on the X-ray flux generated by the filament, and/or distance between sample and detector), and therefore an intensity normalization is performed prior to plotting ("# Scale the data" section within the code).
+- "clustering_xrd.py": This code applies a hierarchical clustering algorithm to XRD spectra (no composition information given to the clustering algorithm). Possible outliers of the clustering are investigated at first, then a range of different total numbers of clusters is tested and the robustness of the clustering confirmed by using a k-means reference clustering method. Hierarchical cluster centers (defined here as the mean of all the XRD spectra within the cluster) are also identified, and cluster centroids (i.e., the sample with the most typical XRD spectrum for the cluster in question; measured via the minimum Euclidean distance to the cluster center) identified as the representatives of each cluster.
+- In this dataset, three XRD clusters are identified; the precise number of clusters varies depending on the dataset. NB: No outliers were dropped during the clustering phase. One of the XRD spectra measured during the project was dropped before clustering and excluded from the datafiles included because its composition could not be confirmed due to a typo in the XRD filename. NB: XRD intensity (y-axis) is in arbitrary units (e.g., depends on the X-ray flux generated by the filament, and/or distance between sample and detector), and therefore an intensity normalization is performed prior to plotting the raw data.
+- "clustering_rgb.py": The same process than described above is applied on the color degradation data. The pipeline is otherwise identical to the "clustering_xrd.py" but reading the input data is different due to different type of data. During the clustering, all the three color channels (red, green, blue) in the RGB data vs. time are appended one after another in order to create a single 1-dimensional vector for each sample to be clustered.
+- In this dataset, three color RGB clusters are identified that are mainly similar to the XRD clusters identified; the precise number of clusters varies depending on the dataset. NB: Outlier analysis revealed one composition repeatedly clustered to its own cluster and this composition turned out to be a reference composition that did not belong to the composition space under investigation. This composition was dropped from the clustering analysis as an outlier. NB: Each "camera image datum" is the entire camera time series for a given composition — capturing the film degradation in the environmental chamber as a function of time. (Films with different decay dynamics, as well as different starting and ending colors, are expected to cluster differently.)
 
 ## Versions
 
-- 1.0 / Jun, 2022: Latest version
+- 1.0 / Jun, 2022: Clustering of RGB data only and plotting of the XRD spectra of the RGB centroids only
+- 1.1 / Jan, 2023: Latest version; clustering of XRD and RGB data in separate pipelines
 
 ## Authors
 ||                    |
 | ------------- | ------------------------------ |
 | **AUTHORS**      | Armi Tiihonen, Shijing Sun | 
-| **VERSION**      | 1.0 / June, 2022 | 
+| **VERSION**      | 1.1 / January, 2023 | 
 | **EMAILS**      | armi.tiihonen@gmail.com | 
 ||                    |
 
 ## Attribution
 
-Please, acknowledge use of this work with the appropriate citation to the repository and research article.
+Please, acknowledge use of this work with the appropriate citation to the research article [1] and the repository.
 
 ## Citation
 
-    @Misc{cluster-perovskite-data2022,
+    @Misc{cluster-perovskite-data2023,
       author =   {The cluster-perovskite-data authors},
       title =    {{cluster-perovskite-data}: Clustering perovskite degradation data and plotting XRD for cluster centroids},
       howpublished = {\url{https://github.com/PV-Lab/cluster-perovskite-data}},
-      year = {2022}
+      year = {2023}
     }
     
-    [Insert details of the open HW paper]

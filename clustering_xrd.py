@@ -23,7 +23,7 @@ if __name__ == "__main__":
     # Load XRD data with a data loader specified for the dataset under
     # investigation. One sample is dropped already before collecting the csv
     # because its composition log was unclear.
-    data_filename = './xrd_data_scaled.csv'
+    data_filename = './Data/XRD/xrd_data_scaled.csv'
     data, compositions, theta, sample_df, df_raw_data = load_xrd_data(data_filename = data_filename)
     
     # Set cluster colors for the plots and calculate the xy coordinates of each
@@ -187,8 +187,8 @@ if __name__ == "__main__":
     
     # Load XRD data with a data loader specified for the dataset under
     # investigation.
-    r_data_thetas_filename = 'xrd_data_raw_thetas.csv'
-    r_data_intensities_filename = 'xrd_data_raw_intensities.csv'
+    r_data_thetas_filename = './Data/XRD/xrd_data_raw_thetas.csv'
+    r_data_intensities_filename = './Data/XRD/xrd_data_raw_intensities.csv'
     
     r_data_thetas = pd.read_csv(r_data_thetas_filename, index_col = 0)
     r_data_intensities = pd.read_csv(r_data_intensities_filename, index_col = 0)
