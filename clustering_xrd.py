@@ -233,9 +233,7 @@ if __name__ == "__main__":
     # Finally, plot the originally measured centroid spectra with normalization
     # and without resampling for the paper.
     
-    # Plot raw data with normalization but without resampling and make sure it
-    # looks similar to the plots from clustering (if not similar, there may be
-    # an indexing error).
+    # Plot raw data with normalization but without resampling.
     plt.figure()
     for i in range(k):
         intmax = np.max(r_data_intensities.iloc[cluster_rep[i],:])
@@ -253,3 +251,28 @@ if __name__ == "__main__":
     
     plt.show()
     
+    
+    # OPTIONAL: PLOT SUPPLEMENTARY FIGURES
+    
+    # Plot normalized XRD spectra (raw data, not resampled) of the RGB centroid
+    # compositions.
+    
+    '''
+    rgb_idx = [23, 29, 72]
+    
+    plt.figure()
+    for i in range(len(rgb_idx)):
+        intmax = np.max(r_data_intensities.iloc[rgb_idx[i],:])
+        
+        plot_spectra(r_data_thetas.iloc[rgb_idx[i],:],
+             r_data_intensities.iloc[[rgb_idx[i]],:] /intmax,
+             [0], ['RGB centroid: ' + create_csmafapbi_compos_str(
+                 compositions, rgb_idx[i])],
+             [cluster_colors[i]], new_figure = False, data_type = 'XRD',
+             show = False)
+    
+    plt.savefig('xrd_spectra_of_rgb_centroids.png')
+    plt.savefig('xrd_spectra_of_rgb_centroids.pdf')
+    
+    plt.show()
+    '''

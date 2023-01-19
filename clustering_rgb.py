@@ -92,9 +92,8 @@ if __name__ == "__main__":
     # LOAD DATA 
     ##############################
     
-    # Load XRD data with a data loader specified for the dataset under
-    # investigation. One sample is dropped already before collecting the csv
-    # because it had been mishandled during preparation.
+    # Load RGB data with a data loader specified for the dataset under
+    # investigation.
     data, compositions, time, sample_df, idx_dropped = load_camera_data(
         n_timepoints = 1200)
 
@@ -108,7 +107,7 @@ if __name__ == "__main__":
     # HIERARCHICAL CLUSTERING ANALYSIS (BASIC)
     ##############################
     
-    # Cluster the samples with RGB spectra only (no composition information).
+    # Cluster the samples with RGB curves only (no composition information).
     
     # Create linkages for the hierarchical clustering dendrogram. Cosine metric
     # is used because the location of the signal (time point) is a better base
@@ -275,3 +274,15 @@ if __name__ == "__main__":
     rgb_timeseries_plot_for_paper(cleaned_data, k, time, mean, std, cluster_rep,
                                       cluster_colors)
     
+    # OPTIONAL: PLOT SUPPLEMENTARY FIGURES
+    
+    # Plot RGB degradation curves of the XRD centroid compositions.
+    
+    '''
+    xrd_idx = [24, 108, 82]
+    
+    rgb_timeseries_plot_for_paper(cleaned_data, k, time, mean, std, xrd_idx,
+                                  cluster_colors,
+                                  save_fig = True,
+                                  filename = 'rgb_curves_of_xrd_centroids')
+    '''

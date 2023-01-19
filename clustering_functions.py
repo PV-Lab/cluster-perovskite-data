@@ -21,8 +21,8 @@ from cycler import cycler
 
 from scipy.cluster.hierarchy import dendrogram, linkage, fcluster, set_link_color_palette
 
-def load_xrd_data(data_filename = './xrd_data_scaled.csv',
-                  comps_filename = 'xrd_data_compositions.csv',
+def load_xrd_data(data_filename = './Data/XRD/xrd_data_scaled.csv',
+                  comps_filename = './Data/XRD/xrd_data_compositions.csv',
                   idx_to_be_dropped = None):
 
     # Read data.
